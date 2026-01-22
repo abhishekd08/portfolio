@@ -132,7 +132,8 @@ main .pv-section:nth-of-type(even):not(.pv-hero) {
   align-items: center;
   z-index: 90;
   background: transparent;
-  transition: height 0.4s ease, background 0.4s ease, box-shadow 0.4s ease, backdrop-filter 0.4s ease;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  transition: height 0.4s ease, border-color 0.4s ease;
 }
 
 .pv-header::after {
@@ -142,22 +143,50 @@ main .pv-section:nth-of-type(even):not(.pv-hero) {
   left: 0;
   right: 0;
   height: 1px;
-  background: transparent;
+  background: rgba(255, 255, 255, 0.18);
   transition: background 0.4s ease;
+}
+
+.pv-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.05));
+  backdrop-filter: blur(28px) saturate(185%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 20px 35px rgba(15, 23, 42, 0.1);
+  opacity: 0.9;
+  pointer-events: none;
+  z-index: -1;
+}
+
+body.pv-dark .pv-header {
+  border-bottom-color: rgba(255, 255, 255, 0.12);
+}
+
+body.pv-dark .pv-header::before {
+  background: linear-gradient(135deg, rgba(12, 12, 12, 0.6), rgba(12, 12, 12, 0.25));
+  border-bottom-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.55);
 }
 
 .pv-header.is-condensed {
   height: 4rem;
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(30px) saturate(185%);
-  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.15);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+  border-bottom-color: rgba(255, 255, 255, 0.3);
+}
+
+.pv-header.is-condensed::before {
+  opacity: 1;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.08));
+  backdrop-filter: blur(32px) saturate(195%);
+}
+
+body.pv-dark .pv-header.is-condensed::before {
+  background: linear-gradient(135deg, rgba(15, 15, 15, 0.65), rgba(15, 15, 15, 0.3));
 }
 
 body.pv-dark .pv-header.is-condensed {
-  background: rgba(7, 7, 7, 0.32);
-  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.55);
-  border-bottom-color: rgba(255, 255, 255, 0.18);
+  border-bottom-color: rgba(255, 255, 255, 0.2);
 }
 
 .pv-header.is-condensed::after {
@@ -517,17 +546,6 @@ body.pv-dark .pv-hero__avatar svg {
   display: inline-block;
   transform-origin: left center;
   will-change: font-size, letter-spacing, transform, opacity;
-}
-
-.pv-hero__focus {
-  display: inline-block;
-  transform-origin: left center;
-  will-change: transform, opacity;
-}
-
-.pv-hero__focus.is-handed-off {
-  opacity: 0;
-  transform: scale(0);
 }
 
 .pv-hero__summary {

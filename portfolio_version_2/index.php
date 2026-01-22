@@ -100,7 +100,7 @@ $blog_posts = [
             </div>
             <div class="pv-hero__content">
                 <div class="pv-hero__name">
-                    <h1>Hi, I'm <span class="pv-hero__focus" data-hero-title>Abhishek.</span></h1>
+                    <h1 data-hero-title>Hi, I'm Abhishek.</h1>
                 </div>
                 <div class="pv-hero__summary" data-animate data-animate-delay="150">
                     <p class="pv-hero__roles">Software Developer · Tech enthusiast · Deep thinker · Systems tinkerer</p>

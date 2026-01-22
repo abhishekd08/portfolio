@@ -4,11 +4,6 @@
 
   const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
-  const toNumber = (value, fallback) => {
-    const parsed = parseFloat(value);
-    return Number.isNaN(parsed) ? fallback : parsed;
-  };
-
   const storage = {
     get(key) {
       try {
@@ -72,11 +67,7 @@
     const metrics = {
       heroTop: 0,
       initialDistance: 1,
-      headerBaseBottom: 0,
-      fontStart: 96,
-      letterStart: -2,
-      fontEnd: 24,
-      letterEnd: 0
+      headerBaseBottom: 0
     };
 
     let handedOff = false;
@@ -91,38 +82,13 @@
       headerTitle.setAttribute('aria-hidden', visible ? 'false' : 'true');
     };
 
-    const applyHeroStyles = (progress) => {
-      const fontSize = metrics.fontStart + (metrics.fontEnd - metrics.fontStart) * progress;
-      const letterSpacing = metrics.letterStart + (metrics.letterEnd - metrics.letterStart) * progress;
-      heroTitle.style.fontSize = `${fontSize}px`;
-      heroTitle.style.letterSpacing = `${letterSpacing}px`;
-    };
-
     const readMetrics = () => {
-      const previousFont = heroTitle.style.fontSize;
-      const previousLetter = heroTitle.style.letterSpacing;
-      heroTitle.style.fontSize = '';
-      heroTitle.style.letterSpacing = '';
-
       const heroRect = heroTitle.getBoundingClientRect();
       metrics.heroTop = heroRect.top + (window.scrollY || window.pageYOffset);
-
-      const heroStyles = window.getComputedStyle(heroTitle);
-      metrics.fontStart = toNumber(heroStyles.fontSize, metrics.fontStart);
-      metrics.letterStart = toNumber(heroStyles.letterSpacing, metrics.letterStart);
-
-      heroTitle.style.fontSize = previousFont;
-      heroTitle.style.letterSpacing = previousLetter;
 
       const headerRect = header.getBoundingClientRect();
       metrics.headerBaseBottom = headerRect.bottom;
       metrics.initialDistance = Math.max(metrics.heroTop - metrics.headerBaseBottom, 1);
-
-      if (headerTitle) {
-        const headerStyles = window.getComputedStyle(headerTitle);
-        metrics.fontEnd = toNumber(headerStyles.fontSize, metrics.fontEnd);
-        metrics.letterEnd = toNumber(headerStyles.letterSpacing, metrics.letterEnd);
-      }
     };
 
     const update = () => {
@@ -132,23 +98,11 @@
 
       const headerBottomDoc = scrollY + headerRect.bottom;
       const distanceRemaining = metrics.heroTop - headerBottomDoc;
-      const progressRaw = 1 - distanceRemaining / metrics.initialDistance;
-      const progress = clamp(progressRaw, 0, 1);
-
       const shouldHandOff = distanceRemaining <= 0;
 
       if (shouldHandOff !== handedOff) {
         handedOff = shouldHandOff;
-        heroTitle.classList.toggle('is-handed-off', handedOff);
-        if (handedOff) {
-          heroTitle.style.fontSize = `${metrics.fontEnd}px`;
-          heroTitle.style.letterSpacing = `${metrics.letterEnd}px`;
-        }
         setHeaderTitleVisibility(handedOff);
-      }
-
-      if (!handedOff) {
-        applyHeroStyles(progress);
       }
     };
 
