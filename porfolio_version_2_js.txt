@@ -1,0 +1,389 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { 
+  Menu, X, Linkedin, FileText, Github, Mail, 
+  ArrowUpRight, Monitor, Server, Cpu, Layers, 
+  Code, Database, Globe, ChevronRight, Moon, Sun, 
+  BookOpen, Terminal, Instagram
+} from 'lucide-react';
+
+/* --- UTILITIES --- 
+*/
+const useScroll = () => {
+  const [scrollPosition, setScrollPosition] = useState(0);
+  useEffect(() => {
+    const handleScroll = () => setScrollPosition(window.scrollY);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+  return scrollPosition;
+};
+
+/* --- COMPONENTS --- 
+*/
+
+const TechBadge = ({ label, icon: Icon }) => (
+  <span className="flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded-md bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700/50">
+    {Icon && <Icon size={12} />}
+    {label}
+  </span>
+);
+
+const IconButton = ({ icon: Icon, onClick, label }) => (
+  <button 
+    onClick={onClick}
+    aria-label={label}
+    className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-gray-600 dark:text-gray-400"
+  >
+    <Icon size={20} />
+  </button>
+);
+
+const Header = ({ darkMode, toggleTheme, scrollPosition }) => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const isScrolled = scrollPosition > 50;
+  
+  const navLinks = [
+    { name: 'Home', href: '#home' },
+    { name: 'Experience', href: '#experience' },
+    { name: 'Projects', href: '#projects' },
+    { name: 'Blog', href: '#blog' },
+  ];
+
+  const nameTransform = {
+    opacity: scrollPosition > 150 ? 1 : 0,
+    transform: `translateY(${scrollPosition > 150 ? '0' : '20px'})`,
+    transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)'
+  };
+
+  return (
+    <>
+      <header 
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+          isScrolled 
+            ? 'h-16 bg-white/40 dark:bg-black/40 backdrop-blur-md border-b border-gray-200/20 dark:border-white/10' 
+            : 'h-24 bg-transparent'
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
+          <div className="flex items-center">
+            <h1 style={nameTransform} className="font-bold text-xl tracking-tight text-gray-900 dark:text-white">
+              Abhishek
+            </h1>
+          </div>
+
+          <nav className="hidden md:flex items-center gap-6">
+            <div className="flex items-center gap-1">
+              {navLinks.map((link) => (
+                <a 
+                  key={link.name}
+                  href={link.href}
+                  className="px-4 py-2 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                >
+                  {link.name}
+                </a>
+              ))}
+            </div>
+            <button 
+              onClick={toggleTheme}
+              className="p-2 rounded-full text-gray-500 hover:text-gray-900 dark:hover:text-white transition-all"
+            >
+              {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
+          </nav>
+
+          <div className="flex items-center gap-4 md:hidden">
+            <button onClick={() => setMobileMenuOpen(true)} className="p-2 text-gray-900 dark:text-white">
+              <Menu size={24} />
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <div className={`fixed inset-0 z-[60] transform transition-transform duration-300 ${mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+        <div className="absolute inset-0 bg-black/20 backdrop-blur-sm" onClick={() => setMobileMenuOpen(false)} />
+        <div className="absolute right-0 top-0 bottom-0 w-64 bg-white dark:bg-gray-900 p-6">
+          <div className="flex justify-end mb-8">
+            <button onClick={() => setMobileMenuOpen(false)} className="dark:text-white"><X /></button>
+          </div>
+          <nav className="flex flex-col gap-4">
+            {navLinks.map((link) => (
+              <a key={link.name} href={link.href} onClick={() => setMobileMenuOpen(false)} className="text-lg font-medium dark:text-white">{link.name}</a>
+            ))}
+          </nav>
+        </div>
+      </div>
+    </>
+  );
+};
+
+const Hero = ({ scrollPosition }) => {
+  const nameProgress = Math.min(scrollPosition / 300, 1);
+  const nameStyle = {
+    transform: `translate(${nameProgress * -50}px, ${nameProgress * -200}px) scale(${1 - nameProgress * 0.6})`,
+    opacity: 1 - (nameProgress * 0.8),
+    display: scrollPosition > 350 ? 'none' : 'block'
+  };
+
+  return (
+    <section id="home" className="relative min-h-screen flex items-center pt-24 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 w-full grid lg:grid-cols-12 gap-12 items-start">
+        <div className="lg:col-span-4 flex flex-col items-center animate-fade-in">
+          <div className="relative p-4 bg-white dark:bg-gray-800 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700 w-full max-w-[280px]">
+            <div className="aspect-square rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-900 mb-6">
+               <svg viewBox="0 0 200 200" className="w-full h-full text-gray-300 dark:text-gray-700 translate-y-8">
+                  <path fill="currentColor" d="M100 0 C130 0 150 20 150 50 C150 80 130 100 100 100 C70 100 50 80 50 50 C50 20 70 0 100 0 Z M20 200 C20 140 60 110 100 110 C140 110 180 140 180 200 Z" />
+               </svg>
+            </div>
+            <div className="flex justify-center gap-4">
+              <a href="#" className="p-2 text-gray-400 hover:text-blue-600 transition-colors"><Linkedin size={20} /></a>
+              <a href="#" className="p-2 text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"><Github size={20} /></a>
+              <a href="#" className="p-2 text-gray-400 hover:text-pink-600 transition-colors"><Instagram size={20} /></a>
+            </div>
+          </div>
+        </div>
+
+        <div className="lg:col-span-8 pt-4">
+          <div style={nameStyle} className="origin-left transition-transform duration-75">
+             <h1 className="text-6xl lg:text-8xl font-bold tracking-tighter text-gray-900 dark:text-white mb-2">
+               Abhishek
+             </h1>
+          </div>
+          <div className="animate-fade-in-up delay-200">
+            <h2 className="text-2xl lg:text-3xl font-medium text-gray-500 dark:text-gray-400 mb-8">
+              Software Engineer working on AI, systems, and products.
+            </h2>
+            <div className="max-w-2xl space-y-6 text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
+              <p>
+                I build scalable infrastructure and intuitive user interfaces. Currently obsessed with the intersection of generative AI and human-computer interaction to create products that feel like magic.
+              </p>
+              <p>
+                Based in San Francisco, I spend my time optimizing inference kernels and crafting fluid motion systems. When I'm not coding, you can find me exploring typography or hiking.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const ExperienceItem = ({ date, company, role, description, tech }) => (
+  <div className="relative grid grid-cols-12 gap-8 py-12 border-b border-gray-100 dark:border-gray-800/50 group">
+    <div className="col-span-12 md:col-span-3 flex flex-col md:items-start">
+      <div className="flex items-center gap-3 mb-2 md:mb-0">
+        <div className="w-2 h-2 rounded-full bg-amber-500/50" />
+        <span className="text-sm font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">{date}</span>
+      </div>
+    </div>
+    
+    <div className="col-span-12 md:col-span-9">
+      <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">{role}</h3>
+      <h4 className="text-lg text-amber-600 dark:text-amber-500 font-medium mb-4">{company}</h4>
+      <ul className="space-y-3 mb-6">
+        {description.map((item, i) => (
+          <li key={i} className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed max-w-3xl">
+            {item}
+          </li>
+        ))}
+      </ul>
+      <div className="flex flex-wrap gap-2">
+        {tech.map((t) => <TechBadge key={t} label={t} />)}
+      </div>
+    </div>
+  </div>
+);
+
+const ProjectCard = ({ title, description, problem, value, stack, image, align = 'left' }) => (
+  <div className="group relative mb-24 last:mb-0">
+    <div className="absolute left-[7px] top-0 bottom-0 w-px bg-gray-200 dark:bg-gray-800 md:left-1/2 md:-translate-x-px h-full" />
+    <div className={`relative md:flex items-center gap-12 ${align === 'right' ? 'md:flex-row-reverse' : ''}`}>
+      <div className="absolute left-0 top-0 md:left-1/2 md:top-1/2 md:-translate-y-1/2 md:-translate-x-1/2 w-4 h-4 rounded-full border-4 border-white dark:border-gray-900 bg-gray-300 dark:bg-gray-600 z-10 group-hover:bg-amber-500 transition-colors duration-500" />
+      <div className="md:w-1/2 pl-8 md:pl-0 mb-8 md:mb-0">
+        <div className={`relative rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700/50 shadow-lg aspect-video transform transition-all duration-500 group-hover:scale-[1.02] ${align === 'right' ? 'md:origin-left' : 'md:origin-right'}`}>
+          <div className="absolute inset-0 flex flex-col">
+            <div className="h-6 bg-gray-200 dark:bg-gray-700/50 flex items-center px-3 gap-1.5">
+              <div className="w-2.5 h-2.5 rounded-full bg-red-400/80" />
+              <div className="w-2.5 h-2.5 rounded-full bg-yellow-400/80" />
+              <div className="w-2.5 h-2.5 rounded-full bg-green-400/80" />
+            </div>
+            <div className="flex-1 bg-gray-50 dark:bg-gray-800 relative flex items-center justify-center p-8">
+               {image === 'ai' ? <Cpu size={64} className="text-gray-300 dark:text-gray-600" /> : <Globe size={64} className="text-gray-300 dark:text-gray-600" />}
+               <div className="absolute bottom-4 right-4 bg-white dark:bg-gray-700 px-3 py-1 rounded-md text-xs font-mono shadow-sm">{title} v1.0</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="md:w-1/2 pl-8 md:pl-0">
+        <div className={`flex flex-col ${align === 'right' ? 'md:items-end md:text-right' : 'md:items-start md:text-left'}`}>
+          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">{title}</h3>
+          <p className="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">{description}</p>
+          <div className={`bg-amber-50 dark:bg-amber-900/10 border border-amber-100 dark:border-amber-900/20 rounded-xl p-4 mb-5 w-full ${align === 'right' ? 'text-right' : 'text-left'}`}>
+            <p className="text-sm text-gray-800 dark:text-gray-200"><span className="font-semibold text-amber-600 dark:text-amber-500">The Problem:</span> {problem}</p>
+            <div className="h-px bg-amber-200/50 dark:bg-amber-800/30 my-2" />
+            <p className="text-sm text-gray-800 dark:text-gray-200"><span className="font-semibold text-amber-600 dark:text-amber-500">Value:</span> {value}</p>
+          </div>
+          <div className={`flex flex-wrap gap-2 mb-6 ${align === 'right' ? 'justify-end' : ''}`}>
+             {stack.map((t, i) => <TechBadge key={i} label={t} />)}
+          </div>
+          <a href="#" className="inline-flex items-center gap-2 text-sm font-semibold text-gray-900 dark:text-white hover:text-amber-600 dark:hover:text-amber-500 transition-colors">
+            View Case Study <ChevronRight size={16} />
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+const BlogCard = ({ title, summary, date }) => (
+  <div className="flex flex-col p-6 rounded-2xl bg-white dark:bg-gray-800/50 border border-gray-100 dark:border-gray-700/50 hover:shadow-lg transition-all duration-300 group h-full">
+    <div className="text-xs font-semibold text-amber-600 dark:text-amber-500 uppercase tracking-wide mb-3">{date}</div>
+    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">{title}</h3>
+    <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed mb-6 flex-grow">{summary}</p>
+    <div className="flex gap-3 pt-4 border-t border-gray-100 dark:border-gray-700">
+      <button className="flex-1 px-4 py-2 text-xs font-medium rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">Read on Medium</button>
+      <button className="flex-1 px-4 py-2 text-xs font-medium rounded-lg border border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:border-gray-400 transition-colors">Read Locally</button>
+    </div>
+  </div>
+);
+
+const App = () => {
+  const [darkMode, setDarkMode] = useState(false);
+  const scrollPosition = useScroll();
+
+  useEffect(() => {
+    if (darkMode) document.documentElement.classList.add('dark');
+    else document.documentElement.classList.remove('dark');
+  }, [darkMode]);
+
+  return (
+    <div className={`min-h-screen transition-colors duration-500 ${darkMode ? 'dark bg-[#050505]' : 'bg-[#FDFDFD]'}`}>
+      
+      <Header darkMode={darkMode} toggleTheme={() => setDarkMode(!darkMode)} scrollPosition={scrollPosition} />
+      
+      <div className="fixed right-8 top-1/2 -translate-y-1/2 z-40 hidden lg:block">
+        <button className="px-6 py-3 rounded-full bg-white/40 dark:bg-white/10 backdrop-blur-xl border border-gray-200/50 dark:border-white/10 text-gray-900 dark:text-white font-bold text-sm tracking-tight shadow-2xl hover:scale-105 active:scale-95 transition-all vertical-text">
+          RESUME
+        </button>
+      </div>
+
+      <main className="pb-32">
+        <Hero scrollPosition={scrollPosition} />
+
+        <section id="experience" className="max-w-7xl mx-auto px-6 py-24 scroll-mt-24">
+          <div className="flex items-center gap-4 mb-12">
+            <h2 className="text-4xl font-bold text-gray-900 dark:text-white">Experience</h2>
+            <div className="h-px flex-1 bg-gray-100 dark:bg-gray-800/50" />
+          </div>
+          
+          <div className="relative">
+            <div className="absolute left-[3px] md:left-[3px] top-0 bottom-0 w-px bg-gray-100 dark:bg-gray-800" />
+            <ExperienceItem 
+              date="2023 - Present"
+              company="TechCorp AI"
+              role="Senior Software Engineer"
+              description={[
+                "Leading the development of a generative AI platform serving 1M+ daily users.",
+                "Optimized inference latency by 40% through custom kernel implementations.",
+                "Mentoring junior engineers and establishing code quality standards."
+              ]}
+              tech={["Python", "PyTorch", "React", "AWS"]}
+            />
+            <ExperienceItem 
+              date="2021 - 2023"
+              company="Innovate Solutions"
+              role="Product Engineer"
+              description={[
+                "Built a real-time collaboration tool from scratch using WebSockets.",
+                "Reduced cloud infrastructure costs by 25% via serverless architecture.",
+                "Collaborated directly with design to implement a pixel-perfect design system."
+              ]}
+              tech={["Node.js", "Redis", "Docker", "TypeScript"]}
+            />
+          </div>
+        </section>
+
+        <section id="projects" className="max-w-6xl mx-auto px-6 w-full py-24 scroll-mt-24">
+          <div className="flex items-center gap-4 mb-16 justify-center">
+            <div className="p-2 rounded-lg bg-gray-200 dark:bg-gray-800"><Cpu size={24} className="text-gray-700 dark:text-white" /></div>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Featured Projects</h2>
+          </div>
+          <div className="relative">
+             <ProjectCard 
+               title="Neural Search Engine"
+               description="A semantic search engine built for legal documents that understands context rather than just keyword matching."
+               problem="Lawyers spend 30% of their time finding relevant case files using outdated keyword search."
+               value="Reduced research time by 60% with semantic understanding."
+               stack={["Python", "FastAPI", "ElasticSearch", "React"]}
+               image="ai"
+               align="left"
+             />
+             <ProjectCard 
+               title="Global Payments Gateway"
+               description="A unified API for handling payments across 40+ countries with automatic currency conversion and fraud detection."
+               problem="High transaction failure rates due to poor routing logic in legacy systems."
+               value="Increased transaction success rate to 99.99%."
+               stack={["Go", "gRPC", "PostgreSQL", "Kafka"]}
+               image="web"
+               align="right"
+             />
+          </div>
+        </section>
+
+        <section id="blog" className="max-w-6xl mx-auto px-6 w-full py-24 scroll-mt-24">
+           <div className="flex items-center justify-between mb-12">
+              <div className="flex items-center gap-4">
+                <div className="p-2 rounded-lg bg-gray-200 dark:bg-gray-800"><BookOpen size={24} className="text-gray-700 dark:text-white" /></div>
+                <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Writing</h2>
+              </div>
+              <a href="#" className="hidden md:flex items-center gap-2 text-sm font-medium text-amber-600 dark:text-amber-500 hover:opacity-80">
+                View all posts <ArrowUpRight size={16} />
+              </a>
+           </div>
+           <div className="grid md:grid-cols-3 gap-6">
+             <BlogCard date="Oct 12, 2024" title="The Future of Frontend Architecture" summary="Why server components are changing the way we think about state management and data fetching." />
+             <BlogCard date="Sep 28, 2024" title="Scaling Vector Databases" summary="Lessons learned from managing 100M+ vectors in production environments." />
+             <BlogCard date="Aug 15, 2024" title="Design Systems for Engineers" summary="Bridging the gap between Figma and Code with automated tokens and robust component APIs." />
+           </div>
+        </section>
+
+        <footer className="mt-20 border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900/50">
+          <div className="max-w-4xl mx-auto px-6 py-16 text-center">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Thanks for dropping by!</h2>
+            <div className="flex justify-center gap-6 mb-12">
+               <IconButton icon={Github} label="GitHub" onClick={() => {}} />
+               <IconButton icon={Linkedin} label="LinkedIn" onClick={() => {}} />
+               <IconButton icon={Mail} label="Email" onClick={() => {}} />
+            </div>
+            <div className="text-sm text-gray-400 dark:text-gray-600">&copy; {new Date().getFullYear()} Abhishek Deshpande. Crafted with React & Tailwind.</div>
+          </div>
+        </footer>
+      </main>
+
+      <style>{`
+        @keyframes fade-in-up {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fade-in {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        .animate-fade-in-up {
+          animation: fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .animate-fade-in {
+          animation: fade-in 1s ease-out forwards;
+        }
+        .vertical-text {
+          writing-mode: vertical-rl;
+          text-orientation: mixed;
+        }
+        html {
+          scroll-behavior: smooth;
+        }
+      `}</style>
+    </div>
+  );
+};
+
+export default App;
