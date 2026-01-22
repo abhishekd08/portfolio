@@ -138,6 +138,9 @@ $blog_posts = [
                         </div>
                         <div class="pv-experience__card" data-experience-card tabindex="0">
                             <h3><?php echo esc_html($item['role']); ?></h3>
+                            <p class="pv-experience__date-mobile">
+                                <span class="pv-experience__date-mobile-text"><?php echo esc_html($item['date']['month'] . ' ' . $item['date']['year']); ?></span>
+                            </p>
                             <p class="pv-experience__company"><?php echo esc_html($item['company']); ?></p>
                             <ul class="pv-experience__list">
                                 <?php foreach ($item['description'] as $index => $line) : 
@@ -181,6 +184,9 @@ $blog_posts = [
                         <div class="pv-project__inner">
                             <div class="pv-project__overview">
                                 <h3><?php echo esc_html($project['title']); ?></h3>
+                                <p class="pv-project__date-mobile">
+                                    <span class="pv-project__date-mobile-text"><?php echo esc_html($project['date']['month'] . ' ' . $project['date']['year']); ?></span>
+                                </p>
                                 <p class="pv-project__description"><?php echo esc_html($project['description']); ?></p>
                             </div>
                             <div class="pv-project__visual" aria-hidden="true">
