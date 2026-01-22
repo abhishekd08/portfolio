@@ -13,14 +13,19 @@
             <span class="pv-header__title" data-header-title aria-hidden="true">Abhishek</span>
         </div>
         <nav class="pv-nav" aria-label="Primary">
-            <a href="#home" class="pv-nav__link" data-scroll-link>Home</a>
-            <a href="#experience" class="pv-nav__link" data-scroll-link>Experience</a>
-            <a href="#projects" class="pv-nav__link" data-scroll-link>Projects</a>
-            <a href="#blog" class="pv-nav__link" data-scroll-link>Blog</a>
+            <a href="#home" class="pv-nav__link" data-scroll-link data-nav-link="home">Home</a>
+            <a href="#experience" class="pv-nav__link" data-scroll-link data-nav-link="experience">Experience</a>
+            <a href="#projects" class="pv-nav__link" data-scroll-link data-nav-link="projects">Projects</a>
+            <a href="#blog" class="pv-nav__link" data-scroll-link data-nav-link="blog">Blog</a>
         </nav>
         <div class="pv-header__actions">
             <button class="pv-theme-toggle" data-theme-toggle aria-label="Toggle theme">
-                <span class="pv-icon pv-icon--sun" aria-hidden="true">
+                <span class="pv-icon pv-icon--theme pv-icon--moon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" role="presentation" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 14.5A8.5 8.5 0 0 1 9.5 3a7 7 0 1 0 11.5 11.5Z" />
+                    </svg>
+                </span>
+                <span class="pv-icon pv-icon--theme pv-icon--sun" aria-hidden="true">
                     <svg viewBox="0 0 24 24" role="presentation" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="5" />
                         <line x1="12" y1="1" x2="12" y2="4" />
@@ -31,11 +36,6 @@
                         <line x1="20" y1="12" x2="23" y2="12" />
                         <line x1="4.22" y1="19.78" x2="6.34" y2="17.66" />
                         <line x1="17.66" y1="6.34" x2="19.78" y2="4.22" />
-                    </svg>
-                </span>
-                <span class="pv-icon pv-icon--moon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" role="presentation" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 14.5A8.5 8.5 0 0 1 9.5 3a7 7 0 1 0 11.5 11.5Z" />
                     </svg>
                 </span>
             </button>
@@ -59,10 +59,10 @@
             </button>
         </div>
         <nav class="pv-mobile-nav" aria-label="Mobile">
-            <a href="#home" data-scroll-link>Home</a>
-            <a href="#experience" data-scroll-link>Experience</a>
-            <a href="#projects" data-scroll-link>Projects</a>
-            <a href="#blog" data-scroll-link>Blog</a>
+            <a href="#home" data-scroll-link data-nav-link="home">Home</a>
+            <a href="#experience" data-scroll-link data-nav-link="experience">Experience</a>
+            <a href="#projects" data-scroll-link data-nav-link="projects">Projects</a>
+            <a href="#blog" data-scroll-link data-nav-link="blog">Blog</a>
         </nav>
     </div>
     <div class="pv-mobile-overlay" data-mobile-overlay></div>

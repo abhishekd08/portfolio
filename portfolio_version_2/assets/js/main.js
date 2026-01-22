@@ -207,6 +207,126 @@
     });
   };
 
+  const initSectionHighlights = () => {
+    const sections = selectAll('[data-section]');
+    const navLinks = selectAll('[data-nav-link]');
+    if (!sections.length || !navLinks.length) return;
+
+    const linkMap = new Map();
+    navLinks.forEach((link) => {
+      const id = link.getAttribute('data-nav-link');
+      if (!id) return;
+      const siblings = linkMap.get(id) || [];
+      siblings.push(link);
+      linkMap.set(id, siblings);
+    });
+
+    const setActive = (id) => {
+      if (!id || !linkMap.has(id)) return;
+      navLinks.forEach((link) => link.classList.remove('is-active'));
+      linkMap.get(id).forEach((link) => link.classList.add('is-active'));
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const sectionId = entry.target.getAttribute('data-section');
+          setActive(sectionId);
+        }
+      });
+    }, { threshold: 0.45 });
+
+    sections.forEach((section) => observer.observe(section));
+    const initial = sections[0]?.getAttribute('data-section');
+    if (initial) {
+      setActive(initial);
+    }
+  };
+
+  const initTimelineFocus = () => {
+    const items = selectAll('[data-timeline-item]');
+    if (!items.length) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        entry.target.classList.toggle('is-active', entry.isIntersecting);
+      });
+    }, { rootMargin: '-30% 0px -40% 0px', threshold: 0.35 });
+
+    items.forEach((item) => observer.observe(item));
+  };
+
+  const initExperienceCards = () => {
+    const cards = selectAll('[data-experience-card]');
+    if (!cards.length) return;
+
+    const setExpanded = (card, expanded) => {
+      card.classList.toggle('is-expanded', expanded);
+      const toggleText = card.querySelector('.pv-experience__toggle-text');
+      if (toggleText) {
+        toggleText.textContent = expanded ? 'Show less' : 'Read more';
+      }
+    };
+
+    cards.forEach((card) => {
+      const toggleButton = card.querySelector('[data-experience-toggle]');
+
+      const toggle = () => {
+        const nextState = !card.classList.contains('is-expanded');
+        setExpanded(card, nextState);
+      };
+
+      card.addEventListener('click', (event) => {
+        if (event.target.closest('[data-experience-toggle]')) {
+          return;
+        }
+        toggle();
+      });
+
+      card.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          toggle();
+        }
+      });
+
+      if (toggleButton) {
+        toggleButton.addEventListener('click', (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          toggle();
+        });
+      }
+    });
+  };
+
+  const initBlogTilt = () => {
+    const cards = selectAll('[data-tilt-card]');
+    const prefersFinePointer = window.matchMedia('(pointer: fine)').matches;
+    if (!cards.length || !prefersFinePointer) return;
+
+    const reset = (card) => {
+      card.style.setProperty('--tilt-x', '0deg');
+      card.style.setProperty('--tilt-y', '0deg');
+    };
+
+    cards.forEach((card) => {
+      card.addEventListener('pointermove', (event) => {
+        const bounds = card.getBoundingClientRect();
+        const ratioX = (event.clientX - bounds.left) / bounds.width;
+        const ratioY = (event.clientY - bounds.top) / bounds.height;
+        const rotateY = (ratioX - 0.5) * 4;
+        const rotateX = (0.5 - ratioY) * 4;
+        card.style.setProperty('--tilt-x', `${rotateY}deg`);
+        card.style.setProperty('--tilt-y', `${rotateX}deg`);
+      });
+
+      card.addEventListener('pointerleave', () => {
+        reset(card);
+      });
+    });
+  };
+
   const initAnimations = () => {
     const items = selectAll('[data-animate]');
     if (!items.length) return;
@@ -231,8 +351,12 @@
   document.addEventListener('DOMContentLoaded', () => {
     initThemeToggle();
     initScrollEffects();
+    initSectionHighlights();
+    initTimelineFocus();
+    initExperienceCards();
     initMobileMenu();
     initSmoothScroll();
     initAnimations();
+    initBlogTilt();
   });
 })();
