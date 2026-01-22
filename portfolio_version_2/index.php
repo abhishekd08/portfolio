@@ -179,6 +179,10 @@ $blog_posts = [
                             </div>
                         </div>
                         <div class="pv-project__inner">
+                            <div class="pv-project__overview">
+                                <h3><?php echo esc_html($project['title']); ?></h3>
+                                <p class="pv-project__description"><?php echo esc_html($project['description']); ?></p>
+                            </div>
                             <div class="pv-project__visual" aria-hidden="true">
                                 <div class="pv-browser">
                                     <div class="pv-browser__bar">
@@ -206,9 +210,7 @@ $blog_posts = [
                                     </div>
                                 </div>
                             </div>
-                            <div class="pv-project__content">
-                                <h3><?php echo esc_html($project['title']); ?></h3>
-                                <p class="pv-project__description"><?php echo esc_html($project['description']); ?></p>
+                            <div class="pv-project__details">
                                 <div class="pv-project__insight">
                                     <p><strong>The Problem:</strong> <?php echo esc_html($project['problem']); ?></p>
                                     <div class="pv-divider"></div>

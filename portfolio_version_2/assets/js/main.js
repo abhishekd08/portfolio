@@ -205,7 +205,7 @@
       entries.forEach((entry) => {
         entry.target.classList.toggle('is-active', entry.isIntersecting);
       });
-    }, { rootMargin: '-30% 0px -40% 0px', threshold: 0.35 });
+    }, { rootMargin: '-20% 0px -45% 0px', threshold: 0.25 });
 
     items.forEach((item) => observer.observe(item));
   };
