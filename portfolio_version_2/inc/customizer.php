@@ -84,6 +84,9 @@ function pv_customize_register($wp_customize) {
     $wp_customize->add_setting('pv_instagram', ['default' => '#', 'sanitize_callback' => 'esc_url_raw']);
     $wp_customize->add_control('pv_instagram', ['label' => 'Instagram URL', 'section' => 'pv_socials', 'type' => 'url']);
 
+    $wp_customize->add_setting('pv_medium', ['default' => '#', 'sanitize_callback' => 'esc_url_raw']);
+    $wp_customize->add_control('pv_medium', ['label' => 'Medium URL', 'section' => 'pv_socials', 'type' => 'url']);
+
     $wp_customize->add_setting('pv_email', ['default' => '#', 'sanitize_callback' => 'sanitize_email']);
     $wp_customize->add_control('pv_email', ['label' => 'Email Address', 'section' => 'pv_socials', 'type' => 'text']);
     // --- Footer ---

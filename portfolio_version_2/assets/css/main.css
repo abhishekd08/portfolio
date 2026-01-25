@@ -519,19 +519,52 @@ body.pv-dark .pv-hero__avatar svg {
 }
 
 .pv-social-link {
-  width: 42px;
-  height: 42px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--pv-border);
-  transition: border 0.2s ease, color 0.2s ease;
+  border: 0;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  color: var(--pv-muted);
+}
+
+.pv-social-link svg {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
 }
 
 .pv-social-link:hover {
-  border-color: var(--pv-text);
-  color: var(--pv-accent);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 25px rgba(15, 23, 42, 0.15);
+  opacity: 1;
+}
+
+/* Brand Colors */
+.pv-social-link--linkedin {
+  color: #0A66C2;
+}
+
+.pv-social-link--github {
+  color: #333;
+}
+
+body.pv-dark .pv-social-link--github {
+  color: #f0f6fc;
+}
+
+.pv-social-link--instagram {
+  color: #E4405F;
+}
+
+.pv-social-link--medium {
+  color: #000000;
+}
+
+body.pv-dark .pv-social-link--medium {
+  color: #ffffff;
 }
 
 .pv-hero__content {
@@ -768,21 +801,27 @@ body.pv-dark .pv-section__icon {
   .pv-experience {
     grid-template-columns: 1fr;
   }
+
   .pv-timeline[data-timeline="experience"] {
     padding-left: 1.25rem;
   }
+
   .pv-timeline[data-timeline="experience"]::before {
     left: 0.35rem;
   }
+
   .pv-experience .pv-timeline__rail {
     padding-left: 0.8rem;
   }
+
   .pv-experience .pv-timeline__glow {
     left: -0.4rem;
   }
+
   .pv-experience .pv-timeline__date {
     margin-left: 0.2rem;
   }
+
   .pv-experience .pv-timeline__connector {
     margin-left: 1rem;
     width: 45px;
@@ -940,9 +979,11 @@ body.pv-dark .pv-section__icon {
   0% {
     box-shadow: 0 0 0 0 rgba(255, 217, 102, 0.6);
   }
+
   70% {
     box-shadow: 0 0 30px 12px rgba(255, 217, 102, 0);
   }
+
   100% {
     box-shadow: 0 0 0 0 rgba(255, 217, 102, 0);
   }
@@ -1013,9 +1054,17 @@ body.pv-dark .pv-badge {
       "details visual";
   }
 
-  .pv-project__visual { grid-area: visual; }
-  .pv-project__overview { grid-area: overview; }
-  .pv-project__details { grid-area: details; }
+  .pv-project__visual {
+    grid-area: visual;
+  }
+
+  .pv-project__overview {
+    grid-area: overview;
+  }
+
+  .pv-project__details {
+    grid-area: details;
+  }
 }
 
 .pv-project .pv-timeline__rail {
@@ -1065,9 +1114,11 @@ body.pv-dark .pv-project .pv-timeline__date {
     left: 50%;
     transform: translateX(-50%);
   }
+
   .pv-project .pv-timeline__glow {
     left: 50%;
   }
+
   .pv-project .pv-timeline__date {
     left: 50%;
     transform: translate(-50%, -130%);
@@ -1077,6 +1128,7 @@ body.pv-dark .pv-project .pv-timeline__date {
 }
 
 @media (max-width: 767px) {
+
   .pv-timeline[data-timeline="experience"],
   .pv-timeline[data-timeline="projects"] {
     padding-left: 0;
@@ -1418,6 +1470,7 @@ body.pv-dark .pv-blog__cta-btn.primary {
     flex-direction: column;
     align-items: flex-start;
   }
+
   .pv-blog__cta {
     flex-direction: column;
   }
