@@ -31,7 +31,8 @@
 
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const stored = storage.get('pv-theme');
-    let isDark = stored ? stored === 'dark' : mediaQuery.matches;
+    // Default to light if nothing stored. Ignore system preference for default state as requested.
+    let isDark = stored === 'dark';
 
     applyTheme(isDark);
 
@@ -176,9 +177,24 @@
     });
 
     const setActive = (id) => {
-      if (!id || !linkMap.has(id)) return;
+      if (!id) return;
+
+      let targetLinks = linkMap.get(id);
+
+      // Case-insensitive fallback
+      if (!targetLinks) {
+        for (const [key, links] of linkMap.entries()) {
+          if (key.toLowerCase() === id.toLowerCase()) {
+            targetLinks = links;
+            break;
+          }
+        }
+      }
+
+      if (!targetLinks) return;
+
       navLinks.forEach((link) => link.classList.remove('is-active'));
-      linkMap.get(id).forEach((link) => link.classList.add('is-active'));
+      targetLinks.forEach((link) => link.classList.add('is-active'));
     };
 
     const observer = new IntersectionObserver((entries) => {
@@ -188,7 +204,7 @@
           setActive(sectionId);
         }
       });
-    }, { threshold: 0.45 });
+    }, { threshold: 0.1 });
 
     sections.forEach((section) => observer.observe(section));
     const initial = sections[0]?.getAttribute('data-section');
