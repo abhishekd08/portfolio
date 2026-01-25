@@ -592,7 +592,7 @@ body.pv-dark .pv-social-link--medium {
   font-size: clamp(2.6rem, 6.5vw, 4.8rem);
   margin: 0;
   font-weight: 800;
-  letter-spacing: -0.05em;
+  letter-spacing: -0.02em;
   display: inline-block;
   transform-origin: left center;
   will-change: font-size, letter-spacing, transform, opacity;
