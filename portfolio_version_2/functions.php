@@ -12,9 +12,22 @@ if (!function_exists('portfolio_version_2_setup')) {
         add_theme_support('title-tag');
         add_theme_support('post-thumbnails');
         add_theme_support('html5', ['search-form', 'comment-form', 'comment-list', 'gallery', 'caption', 'style', 'script']);
+        
+        register_nav_menus([
+            'primary' => 'Primary Menu',
+        ]);
     }
 }
 add_action('after_setup_theme', 'portfolio_version_2_setup');
+
+/**
+ * Required files.
+ */
+require get_template_directory() . '/inc/custom-post-types.php';
+require get_template_directory() . '/inc/meta-boxes.php';
+require get_template_directory() . '/inc/customizer.php';
+require get_template_directory() . '/inc/menu-functions.php';
+require get_template_directory() . '/inc/seeder.php'; // Temporary seeder
 
 if (!function_exists('portfolio_version_2_scripts')) {
     function portfolio_version_2_scripts() {

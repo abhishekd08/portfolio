@@ -1430,3 +1430,11 @@ body.pv-dark .pv-blog__cta-btn.primary {
     animation-iteration-count: 1 !important;
   }
 }
+
+@media (max-width: 768px) {
+  [data-animate] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}

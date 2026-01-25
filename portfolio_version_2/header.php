@@ -12,12 +12,17 @@
         <div class="pv-header__logo">
             <span class="pv-header__title" data-header-title aria-hidden="true">Abhishek</span>
         </div>
-        <nav class="pv-nav" aria-label="Primary">
-            <a href="#home" class="pv-nav__link" data-scroll-link data-nav-link="home">Home</a>
-            <a href="#experience" class="pv-nav__link" data-scroll-link data-nav-link="experience">Experience</a>
-            <a href="#projects" class="pv-nav__link" data-scroll-link data-nav-link="projects">Projects</a>
-            <a href="#blog" class="pv-nav__link" data-scroll-link data-nav-link="blog">Blog</a>
-        </nav>
+        <?php
+        wp_nav_menu([
+            'theme_location' => 'primary',
+            'container' => 'nav',
+            'container_class' => 'pv-nav',
+            'container_aria_label' => 'Primary',
+            'items_wrap' => '%3$s', // No UL
+            'walker' => new PV_Walker_Nav_Menu(),
+            'fallback_cb' => false,
+        ]);
+        ?>
         <div class="pv-header__actions">
             <button class="pv-theme-toggle" data-theme-toggle aria-label="Toggle theme">
                 <span class="pv-icon pv-icon--theme pv-icon--moon" aria-hidden="true">
