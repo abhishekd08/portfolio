@@ -110,22 +110,25 @@ $blog_query = new WP_Query([
                     $tech_stack = $tech_string ? array_map('trim', explode(',', $tech_string)) : [];
                     $description_lines = $description_raw ? array_map('trim', explode("\n", $description_raw)) : [];
                     $visible_count = 5;
-                    $date_label = sprintf('%s %s - %s %s', $from_month, $from_year, $to_month, $to_year);
-                    $date_display = sprintf('%s %s - %s %s', $from_month, $from_year, $to_month, $to_year);
+                    $to_display = (empty($to_month) || empty($to_year)) ? 'Present' : trim($to_month . ' ' . $to_year);
+                    $from_display = trim($from_month . ' ' . $from_year);
+                    $date_label = $from_display . ' - ' . $to_display;
+                    $date_display = $from_display . ' - ' . $to_display;
                 ?>
                     <article class="pv-experience" data-animate data-timeline-item>
                         <div class="pv-timeline__rail">
                             <span class="pv-timeline__glow" aria-hidden="true"></span>
                             <div class="pv-timeline__date" aria-label="<?php echo esc_attr($date_label); ?>">
-                                <span class="pv-timeline__month"><?php echo esc_html($from_month); ?></span>
-                                <span class="pv-timeline__year"><?php echo esc_html($from_year); ?></span>
+                                <span class="pv-timeline__to"><?php echo esc_html($to_display); ?></span>
+                                <span class="pv-timeline__separator" aria-hidden="true">⋮</span>
+                                <span class="pv-timeline__from"><?php echo esc_html($from_display); ?></span>
                             </div>
                             <span class="pv-timeline__connector" aria-hidden="true"></span>
                         </div>
                         <div class="pv-experience__card" data-experience-card tabindex="0">
                             <h3><?php echo esc_html($role_title); ?></h3>
-                            <p class="pv-experience__date-mobile">
-                                <span class="pv-experience__date-mobile-text"><?php echo esc_html($date_display); ?></span>
+                            <p class="pv-experience__date-range">
+                                <span class="pv-experience__date-range-text"><?php echo esc_html($date_display); ?></span>
                             </p>
                             <p class="pv-experience__company"><?php echo esc_html($company); ?></p>
                             <ul class="pv-experience__list">

@@ -48,11 +48,11 @@ function pv_render_experience_meta($post) {
     <div style="display: flex; gap: 10px;">
         <p style="flex: 1;">
             <label>To Month (e.g. December):</label><br>
-            <input type="text" name="pv_to_month" value="<?php echo esc_attr($to_month); ?>" class="widefat" required>
+            <input type="text" name="pv_to_month" value="<?php echo esc_attr($to_month); ?>" class="widefat">
         </p>
         <p style="flex: 1;">
             <label>To Year (e.g. 2025):</label><br>
-            <input type="text" name="pv_to_year" value="<?php echo esc_attr($to_year); ?>" class="widefat" required>
+            <input type="text" name="pv_to_year" value="<?php echo esc_attr($to_year); ?>" class="widefat">
         </p>
     </div>
     <p>

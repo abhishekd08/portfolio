@@ -739,16 +739,18 @@ body.pv-dark .pv-section__icon {
 }
 
 .pv-timeline__date {
-  font-size: 0.7rem;
-  letter-spacing: 0.18em;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--pv-muted-strong);
   font-weight: 700;
   display: flex;
   flex-direction: column;
-  gap: 0.1rem;
+  gap: 0.2rem;
   margin-left: 1.25rem;
-  line-height: 1.2;
+  line-height: 1.15;
+  align-items: center;
+  text-align: center;
 }
 
 .pv-timeline__month,
@@ -763,6 +765,26 @@ body.pv-dark .pv-section__icon {
 .pv-timeline__year {
   font-size: 0.65rem;
   opacity: 0.75;
+}
+
+.pv-timeline__range {
+  display: block;
+  line-height: 1.4;
+  max-width: 150px;
+}
+
+.pv-timeline__to,
+.pv-timeline__from {
+  display: block;
+  white-space: nowrap;
+}
+
+.pv-timeline__separator {
+  display: block;
+  line-height: 1;
+  opacity: 0.75;
+  font-weight: 900;
+  font-size: 0.9rem;
 }
 
 .pv-timeline__connector {
@@ -785,6 +807,15 @@ body.pv-dark .pv-section__icon {
 
 .pv-experience__date-mobile {
   margin: 0.35rem 0 0.4rem;
+}
+
+.pv-experience__date-range {
+  margin: 0.35rem 0 0.4rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--pv-muted-strong);
 }
 
 .pv-project__date-mobile {
