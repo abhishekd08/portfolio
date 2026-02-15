@@ -76,9 +76,9 @@ $blog_query = new WP_Query([
                 <div class="pv-hero__summary" data-animate data-animate-delay="150">
                     <p class="pv-hero__roles"><?php echo esc_html($hero_roles); ?></p>
                     <div class="pv-hero__text">
-                         <p><?php echo nl2br(esc_html($hero_text_1)); ?></p>
+                         <p><?php echo wp_kses_post(wpautop($hero_text_1)); ?></p>
                          <?php if ($hero_text_2) : ?>
-                            <p><?php echo nl2br(esc_html($hero_text_2)); ?></p>
+                            <p><?php echo wp_kses_post(wpautop($hero_text_2)); ?></p>
                          <?php endif; ?>
                     </div>
                 </div>
@@ -95,29 +95,37 @@ $blog_query = new WP_Query([
                 <?php if ($experience_query->have_posts()) : while ($experience_query->have_posts()) : $experience_query->the_post(); 
                     $role_title = get_the_title();
                     $company = get_post_meta(get_the_ID(), '_pv_company', true);
-                    $month = get_post_meta(get_the_ID(), '_pv_month', true);
-                    $year = get_post_meta(get_the_ID(), '_pv_year', true);
+                    $from_month = get_post_meta(get_the_ID(), '_pv_from_month', true);
+                    $from_year = get_post_meta(get_the_ID(), '_pv_from_year', true);
+                    $to_month = get_post_meta(get_the_ID(), '_pv_to_month', true);
+                    $to_year = get_post_meta(get_the_ID(), '_pv_to_year', true);
+                    // Backward compatibility
+                    if (empty($from_month) && empty($from_year)) {
+                        $from_month = get_post_meta(get_the_ID(), '_pv_month', true);
+                        $from_year = get_post_meta(get_the_ID(), '_pv_year', true);
+                    }
                     $tech_string = get_post_meta(get_the_ID(), '_pv_tech', true);
                     $description_raw = get_post_meta(get_the_ID(), '_pv_description', true);
                     
                     $tech_stack = $tech_string ? array_map('trim', explode(',', $tech_string)) : [];
                     $description_lines = $description_raw ? array_map('trim', explode("\n", $description_raw)) : [];
                     $visible_count = 5;
-                    $date_label = sprintf('%s, %s', $month, $year);
+                    $date_label = sprintf('%s %s - %s %s', $from_month, $from_year, $to_month, $to_year);
+                    $date_display = sprintf('%s %s - %s %s', $from_month, $from_year, $to_month, $to_year);
                 ?>
                     <article class="pv-experience" data-animate data-timeline-item>
                         <div class="pv-timeline__rail">
                             <span class="pv-timeline__glow" aria-hidden="true"></span>
                             <div class="pv-timeline__date" aria-label="<?php echo esc_attr($date_label); ?>">
-                                <span class="pv-timeline__month"><?php echo esc_html($month); ?></span>
-                                <span class="pv-timeline__year"><?php echo esc_html($year); ?></span>
+                                <span class="pv-timeline__month"><?php echo esc_html($from_month); ?></span>
+                                <span class="pv-timeline__year"><?php echo esc_html($from_year); ?></span>
                             </div>
                             <span class="pv-timeline__connector" aria-hidden="true"></span>
                         </div>
                         <div class="pv-experience__card" data-experience-card tabindex="0">
                             <h3><?php echo esc_html($role_title); ?></h3>
                             <p class="pv-experience__date-mobile">
-                                <span class="pv-experience__date-mobile-text"><?php echo esc_html($month . ' ' . $year); ?></span>
+                                <span class="pv-experience__date-mobile-text"><?php echo esc_html($date_display); ?></span>
                             </p>
                             <p class="pv-experience__company"><?php echo esc_html($company); ?></p>
                             <ul class="pv-experience__list">
@@ -125,7 +133,7 @@ $blog_query = new WP_Query([
                                     if (empty($line)) continue;
                                     $extra_class = $index >= $visible_count ? ' class="is-extra"' : '';
                                 ?>
-                                    <li<?php echo $extra_class; ?>><?php echo esc_html($line); ?></li>
+                                    <li<?php echo $extra_class; ?>><?php echo wp_kses_post($line); ?></li>
                                 <?php endforeach; ?>
                             </ul>
                             <div class="pv-badges">
@@ -152,13 +160,26 @@ $blog_query = new WP_Query([
                 <?php if ($projects_query->have_posts()) : while ($projects_query->have_posts()) : $projects_query->the_post(); 
                     $project_title = get_the_title();
                     $desc = get_post_meta(get_the_ID(), '_pv_project_desc', true);
-                    $problem = get_post_meta(get_the_ID(), '_pv_problem', true);
-                    $value = get_post_meta(get_the_ID(), '_pv_value', true);
                     $tech_string = get_post_meta(get_the_ID(), '_pv_project_tech', true);
                     $month = get_post_meta(get_the_ID(), '_pv_project_month', true);
                     $year = get_post_meta(get_the_ID(), '_pv_project_year', true);
                     $image_type = get_post_meta(get_the_ID(), '_pv_image_type', true);
                     $align = get_post_meta(get_the_ID(), '_pv_align', true);
+                    
+                    // Get repeater fields or fallback to old problem/value
+                    $project_fields = get_post_meta(get_the_ID(), '_pv_project_fields', true);
+                    if (empty($project_fields)) {
+                        // Backward compatibility
+                        $problem = get_post_meta(get_the_ID(), '_pv_problem', true);
+                        $value = get_post_meta(get_the_ID(), '_pv_value', true);
+                        $project_fields = [];
+                        if (!empty($problem)) {
+                            $project_fields[] = ['label' => 'The Problem', 'content' => $problem];
+                        }
+                        if (!empty($value)) {
+                            $project_fields[] = ['label' => 'Value', 'content' => $value];
+                        }
+                    }
                     
                     $tech_stack = $tech_string ? array_map('trim', explode(',', $tech_string)) : [];
                     $date_label = sprintf('%s, %s', $month, $year);
@@ -178,7 +199,7 @@ $blog_query = new WP_Query([
                                 <p class="pv-project__date-mobile">
                                     <span class="pv-project__date-mobile-text"><?php echo esc_html($month . ' ' . $year); ?></span>
                                 </p>
-                                <p class="pv-project__description"><?php echo esc_html($desc); ?></p>
+                                <p class="pv-project__description"><?php echo wp_kses_post(wpautop($desc)); ?></p>
                             </div>
                             <div class="pv-project__visual" aria-hidden="true">
                                 <?php if (has_post_thumbnail()) : ?>
@@ -214,11 +235,22 @@ $blog_query = new WP_Query([
                                 <?php endif; ?>
                             </div>
                             <div class="pv-project__details">
-                                <div class="pv-project__insight">
-                                    <p><strong>The Problem:</strong> <?php echo esc_html($problem); ?></p>
-                                    <div class="pv-divider"></div>
-                                    <p><strong>Value:</strong> <?php echo esc_html($value); ?></p>
-                                </div>
+                                <?php if (!empty($project_fields)) : ?>
+                                    <div class="pv-project__insight">
+                                        <?php foreach ($project_fields as $index => $field) : 
+                                            if (empty($field['label']) && empty($field['content'])) continue;
+                                        ?>
+                                            <?php if (!empty($field['label'])) : ?>
+                                                <p><strong><?php echo esc_html($field['label']); ?>:</strong> <?php echo wp_kses_post($field['content']); ?></p>
+                                            <?php else : ?>
+                                                <p><?php echo wp_kses_post($field['content']); ?></p>
+                                            <?php endif; ?>
+                                            <?php if ($index < count($project_fields) - 1) : ?>
+                                                <div class="pv-divider"></div>
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
+                                    </div>
+                                <?php endif; ?>
                                 <div class="pv-badges">
                                     <?php foreach ($tech_stack as $tech) : ?>
                                         <span class="pv-badge"><?php echo esc_html($tech); ?></span>

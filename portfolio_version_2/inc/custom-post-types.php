@@ -60,15 +60,23 @@ function pv_update_sort_date($post_id) {
 
     // Define field names based on type
     if ($post_type === 'experience') {
-        $month_key = '_pv_month';
-        $year_key  = '_pv_year';
+        $month_key = '_pv_from_month';
+        $year_key  = '_pv_from_year';
+        // Backward compatibility: if from_month/from_year don't exist, use old month/year
+        $month_str = get_post_meta($post_id, $month_key, true);
+        $year_str  = get_post_meta($post_id, $year_key, true);
+        if (empty($month_str) && empty($year_str)) {
+            $month_key = '_pv_month';
+            $year_key  = '_pv_year';
+            $month_str = get_post_meta($post_id, $month_key, true);
+            $year_str  = get_post_meta($post_id, $year_key, true);
+        }
     } else {
         $month_key = '_pv_project_month';
         $year_key  = '_pv_project_year';
+        $month_str = get_post_meta($post_id, $month_key, true);
+        $year_str  = get_post_meta($post_id, $year_key, true);
     }
-
-    $month_str = get_post_meta($post_id, $month_key, true);
-    $year_str  = get_post_meta($post_id, $year_key, true);
 
     if (empty($year_str)) return; 
 

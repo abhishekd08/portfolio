@@ -50,23 +50,25 @@ function pv_customize_register($wp_customize) {
     // Hero Text 1 (Bio)
     $wp_customize->add_setting('pv_hero_text_1', [
         'default' => 'I blend systems engineering with thoughtful product sense to ship AI-first capabilities that feel effortless. From semantic search to custom inference runtimes, I obsess over performance, reliability, and the final polish.',
-        'sanitize_callback' => 'sanitize_textarea_field',
+        'sanitize_callback' => 'wp_kses_post',
     ]);
     $wp_customize->add_control('pv_hero_text_1', [
         'label' => 'Bio Paragraph 1',
         'section' => 'pv_identity',
         'type' => 'textarea',
+        'description' => 'HTML formatting allowed (bold, italic, underline). Use &lt;strong&gt;, &lt;em&gt;, &lt;u&gt; tags.',
     ]);
 
     // Hero Text 2 (Bio)
     $wp_customize->add_setting('pv_hero_text_2', [
         'default' => "Currently advising teams on generative tooling, design systems, and developer workflows. Outside work I'm either sketching new typography ideas or testing climbing routes around the Bay.",
-        'sanitize_callback' => 'sanitize_textarea_field',
+        'sanitize_callback' => 'wp_kses_post',
     ]);
     $wp_customize->add_control('pv_hero_text_2', [
         'label' => 'Bio Paragraph 2',
         'section' => 'pv_identity',
         'type' => 'textarea',
+        'description' => 'HTML formatting allowed (bold, italic, underline). Use &lt;strong&gt;, &lt;em&gt;, &lt;u&gt; tags.',
     ]);
 
     // Social Links
